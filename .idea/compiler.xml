@@ -6,9 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="bootstrap" />
         <module name="echo-server" />
         <module name="io-compare" />
         <module name="utils" />
+        <module name="websocket" />
       </profile>
     </annotationProcessing>
   </component>

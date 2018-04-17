@@ -22,11 +22,7 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
         ctx.writeAndFlush(Unpooled.copiedBuffer("Netty rocks!",CharsetUtil.UTF_8));
     }
 
-    @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
-        //记录已接收消息的转储
-        System.out.println("Client received: "+byteBuf.toString(CharsetUtil.UTF_8));
-    }
+
 
 
     @Override
@@ -34,5 +30,11 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
         //在发生异常时，记录错误并关闭Channel
         cause.printStackTrace();
         ctx.close();
+    }
+
+    @Override
+    protected void messageReceived(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
+        //记录已接收消息的转储
+        System.out.println("Client received: "+byteBuf.toString(CharsetUtil.UTF_8));
     }
 }

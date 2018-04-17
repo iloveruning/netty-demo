@@ -2,6 +2,7 @@ package com.cll.echo.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -42,6 +43,15 @@ public class EchoClient {
                     });
             //连接到远程节点，阻塞等待直到连接完成
             ChannelFuture future = bootstrap.connect().sync();
+            future.addListener(new ChannelFutureListener() {
+                public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                    if (channelFuture.isSuccess()){
+                        System.out.println("连接到远程服务器成功！");
+                    }else {
+                        System.out.println("连接失败！");
+                    }
+                }
+            });
             //阻塞，直到Channel 关闭
             future.channel().closeFuture().sync();
 

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>WebSocket客户端</title>
+</head>
+<body>
+
+<div>
+        <h2>接收到服务端的消息</h2>
+        <textarea id="resp" style="width: 1024px;height: 400px;"></textarea>
+    </div>
+    <hr color="red">
+    <form>
+        <input type="text" name="msg" id="msg"><br><br>
+        <input type="button" onclick="send()" value="发送" style="color: white;border-radius: 30px;background-color: aqua;width: 100px">
+    </form>
+</div>
+
+<script type="text/javascript">
+    var socket;
+    var resp=document.getElementById("resp");
+    var msg=document.getElementById("msg")
+    if (window.WebSocket){
+       socket=new WebSocket("ws://localhost:8888/websocket");
+       socket.onmessage=function (ev) {
+           resp.value+=ev.data+"\r\n";
+       };
+       socket.onopen=function (ev) {
+           resp.value+="您当前浏览器支持WebSocket,已和服务器建立连接\r\n"
+       };
+       socket.onclose=function (ev) {
+           resp.value="";
+           resp.value="和服务器断开连接"
+       };
+       socket.onerror=function (ev) {
+           resp.value+="发生错误："+ev
+       }
+    }else {
+        alert("您的浏览器不支持websocket")
+    }
+
+    function send() {
+        if (!window.WebSocket){
+            alert("您的浏览器不支持websocket");
+            return
+        }
+
+        if (socket.readyState===WebSocket.OPEN){
+            socket.send(msg.value);
+        } else {
+            alert("连接还未建立");
+        }
+    }
+</script>
+</body>
+</html>
